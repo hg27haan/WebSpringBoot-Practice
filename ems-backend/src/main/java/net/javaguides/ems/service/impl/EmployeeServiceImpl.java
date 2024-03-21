@@ -46,7 +46,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDto updateEmployee(Long employeeId, EmployeeDto updatedEmployee) {
 
         Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee  not exit with give id: " + employeeId));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not exit with give id: " + employeeId));
 
         employee.setFirstName(updatedEmployee.getFirstName());
         employee.setLastName(updatedEmployee.getLastName());
@@ -61,7 +61,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void deleteEmployee(Long employeeId) {
 
         Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee  not exit with give id: " + employeeId));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not exit with give id: " + employeeId));
 
         employeeRepository.deleteById(employeeId);
     }
