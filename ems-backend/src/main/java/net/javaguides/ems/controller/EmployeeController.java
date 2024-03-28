@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/employees")
 @AllArgsConstructor
-public class EmployeeController {
+public class
+EmployeeController {
 
     private EmployeeService employeeService;
 
