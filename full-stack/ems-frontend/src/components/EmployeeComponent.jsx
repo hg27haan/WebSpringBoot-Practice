@@ -9,11 +9,13 @@ const EmployeeComponent = () => {
     const [email, setEmail] = useState('')
 
     const {id} = useParams()
+    
     const [errors, setErrors] = useState({
         firstName: '',
         lastName: '',
         email: ''
     })
+    
     const navigator = useNavigate();
 
     useEffect(() => {
