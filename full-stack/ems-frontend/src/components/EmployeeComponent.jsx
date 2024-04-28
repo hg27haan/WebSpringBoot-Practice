@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { createEmployee } from '../services/EmployeeService'
+import React, { useEffect, useState } from 'react'
+import { createEmployee, getEmployee, updateEmployee } from '../services/EmployeeService'
 import { useNavigate, useParams } from 'react-router-dom'
 
 const EmployeeComponent = () => {
@@ -9,23 +9,48 @@ const EmployeeComponent = () => {
     const [email, setEmail] = useState('')
 
     const {id} = useParams()
+    
     const [errors, setErrors] = useState({
         firstName: '',
         lastName: '',
         email: ''
     })
-    const navigator = useNavigate()
+    
+    const navigator = useNavigate();
 
-    function saveEmployee(e){
+    useEffect(() => {
+        if(id) {
+            getEmployee(id).then((response) => {
+                setfisrtName(response.data.firstName);
+                setlastName(response.data.lastName);
+                setEmail(response.data.email);
+            }). catch( error => {
+                console.error(error);
+            })
+        }
+    }, [id])
+
+    function saveOrUpdateEmployee(e){
         e.preventDefault();
         if(validateForm()){
             const employee = {firstName, lastName, email};
             console.log(employee)
-    
-            createEmployee(employee).then((response) => {
-                console.log(response.data)
-                navigator('/employees')
-            })
+            
+            if(id){
+                updateEmployee(id, employee).then((response) => {
+                    console.log(response.data);
+                    navigator('/employees')
+                }).catch(error => {
+                    console.error(error);
+                })
+            } else {
+                createEmployee(employee).then((response) => {
+                    console.log(response.data)
+                    navigator('/employees')
+                }).catch(error => {
+                    console.error(error);
+                })
+            }
         }
     }
 
@@ -85,7 +110,7 @@ const EmployeeComponent = () => {
                                 name='firstName' 
                                 value={firstName} 
                                 className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
-                                onChange={(e) => setfisrtName(e.target.value)}>
+                                onChange={(e) => {setfisrtName(e.target.value)}}>
                                 </input>
                                 {errors.firstName && <div className='invalid-feedback'>{errors.firstName}</div>}
                             </div>
@@ -98,7 +123,7 @@ const EmployeeComponent = () => {
                                 name='LastName' 
                                 value={lastName} 
                                 className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}
-                                onChange={(e) => setlastName(e.target.value)}>
+                                onChange={(e) => {setlastName(e.target.value)}}>
                                 </input>
                                 {errors.lastName && <div className='invalid-feedback'>{errors.lastName}</div>}
                             </div>
@@ -111,12 +136,13 @@ const EmployeeComponent = () => {
                                 name='email' 
                                 value={email} 
                                 className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-                                onChange={(e) => setEmail(e.target.value)}>
+                                onChange={(e) => {setEmail(e.target.value)}}>
                                 </input>
                                 {errors.email && <div className='invalid-feedback'>{errors.email}</div>}
+                                <button className='btn btn-success' onClick={saveOrUpdateEmployee}>Submit</button>
                             </div>
 
-                            <button className='btn btn-success' onClick={saveEmployee}>Submit</button>
+
                         </form>
                     </div>
                 </div>
