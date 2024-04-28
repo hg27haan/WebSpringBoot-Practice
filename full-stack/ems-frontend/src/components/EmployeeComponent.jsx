@@ -28,20 +28,21 @@ const EmployeeComponent = () => {
                 console.error(error);
             })
         }
-    })
+    }, [id])
 
     function saveOrUpdateEmployee(e){
         e.preventDefault();
         if(validateForm()){
             const employee = {firstName, lastName, email};
             console.log(employee)
+            
             if(id){
                 updateEmployee(id, employee).then((response) => {
                     console.log(response.data);
                     navigator('/employees')
                 }).catch(error => {
                     console.error(error);
-                });
+                })
             } else {
                 createEmployee(employee).then((response) => {
                     console.log(response.data)
@@ -138,9 +139,10 @@ const EmployeeComponent = () => {
                                 onChange={(e) => {setEmail(e.target.value)}}>
                                 </input>
                                 {errors.email && <div className='invalid-feedback'>{errors.email}</div>}
+                                <button className='btn btn-success' onClick={saveOrUpdateEmployee}>Submit</button>
                             </div>
 
-                            <button className='btn btn-success' onClick={saveOrUpdateEmployee}>Submit</button>
+
                         </form>
                     </div>
                 </div>
